@@ -59,21 +59,26 @@ int main(const int argc, const char * argv[])
 		if (EXIT_SUCCESS == process_and_save(tmp_file_, to_parse))
 		{
 			dbj_sll_node * sll_;
-			bool verbosity = true;
-			int retval = load_words_to_sll(tmp_file_, &sll_, verbosity);
+			bool verbosity = false;
+			if (EXIT_SUCCESS != load_words_to_sll(tmp_file_, &sll_, verbosity))
+			{
+				perror("load_words_to_sll() failed");
+				return EXIT_FAILURE;
+			}
 
 			if (fclose(tmp_file_)) {
 				perror("tmp file closing failed");
+				return EXIT_FAILURE;
 			}
 
-			printf("\nThe SLL current content");
+			printf("\nThe SLL content");
 			dbj_sll_foreach(sll_, dbj_sll_node_dump_visitor);
 			printf("\n");
 
 			// erase the sll + the head 
 			dbj_sll_erase_with_head(sll_);
 
-			return retval;
+			return EXIT_SUCCESS;
 		}
 	}
 	return EXIT_FAILURE;
