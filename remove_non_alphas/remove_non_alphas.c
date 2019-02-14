@@ -1,4 +1,18 @@
 
+/*
+(c) Copyright 2018-2019 by dbj@dbj.org
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http ://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,26 +21,23 @@
 
 #include "dbj_sll.h"
 /*
-task: remove all non alpha chars from a given string
+task: remove all non alpha chars from a given string, coming from a command line
+
+design: 
+
+parse and save to a temporary file
+load the list of words from a file to a singly linked list
+
+note: 
+
+ This is C learning excersize. 
+ Onlookers are wellcome to suggest how to clean it and/or simplify it. 
+ There is always a scope for that. But do not forget the keyword number one:
+
+  Feasibility
+
 */
-/*
-set vbuf signature
 
-	_Success_(return == 0)
-	_Check_return_opt_
-	_ACRTIMP int __cdecl setvbuf(
-		_Inout_                      FILE*  _Stream,
-		_Inout_updates_opt_(_Size)   char*  _Buffer,
-		_In_                         int    _Mode,
-		_In_                         size_t _Size
-		);
-
-tmpfile signature
-
-	_Check_return_ _CRT_INSECURE_DEPRECATE(tmpfile_s)
-
-	_ACRTIMP FILE* __cdecl tmpfile(void);
-*/
 const char * TEST_INPUT = "0abra123ka456dabra789and345also678some123456jabra";
 
 int process_and_save(FILE *, const char *);
