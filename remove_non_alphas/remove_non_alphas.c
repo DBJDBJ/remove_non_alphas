@@ -19,7 +19,7 @@ limitations under the License.
 #include <ctype.h>
 #include <sys/stat.h>
 
-#include "dbj_sll.h"
+#include "../libs/dbj_sll.h"
 /*
 task: remove all non alpha chars from a given string, coming from a command line
 
