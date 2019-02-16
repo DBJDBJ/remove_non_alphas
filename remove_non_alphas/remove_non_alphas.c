@@ -41,6 +41,15 @@ note:
 
 const char * TEST_INPUT = "0abra123ka456dabra789and345also678some123456jabra";
 
+// every program should have limits established 
+// on the data it is processing
+const size_t MAX_WORD_LEN = BUFSIZ;
+// one letter word
+const size_t MIN_WORD_LEN = 1;
+const size_t MAX_INPUT_LEN = 0xFFFF;
+// one letter input
+const size_t MIN_INPUT_LEN = 1; 
+
 int process_and_save(FILE *, const char *);
 int show_file(FILE *);
 int create_tmp_file(FILE ** );
