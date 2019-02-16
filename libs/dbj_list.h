@@ -40,6 +40,9 @@ extern "C" {
 	*/
 	 dbj_list_type dbj_list_reset(dbj_list_type );
 
+	 void dbj_list_free(dbj_list_type);
+
+
 
 #define TEST_DBJ_DYNAMIC
 #ifdef TEST_DBJ_DYNAMIC
@@ -52,9 +55,9 @@ extern "C" {
 		head_ = dbj_list_append(head_, "KA");
 		head_ = dbj_list_append(head_, "DABRA");
 		head_ = dbj_list_reset(head_);
-		// reset is not free head_ is valid here 
-		free(head_);
-		// or proceed using it
+		// "reset" is not "free" head_ is valid here 
+		// but now it is not
+		dbj_list_free(head_);
 	}
 
 #endif // ! TEST_DBJ_DYNAMIC
