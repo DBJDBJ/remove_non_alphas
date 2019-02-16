@@ -13,69 +13,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+#include "remove_non_alphas.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
 
-#include "../libs/dbj_sll.h"
-#include "../libs/dbj_list.h"
-/*
-task: remove all non alpha chars from a given string, coming from a command line
-
-design: 
-
-parse and save to a temporary file
-load the list of words from a file to a singly linked list
-
-note: 
-
- This is C learning excersize. 
- Onlookers are wellcome to suggest how to clean it and/or simplify it. 
- There is always a scope for that. But do not forget the keyword number one:
-
-  Feasibility
-
-*/
-
-const char * TEST_INPUT = "0abra123ka456dabra789and345also678some123456jabra";
-
-// every program should have limits established 
-// on the data it is processing
-const size_t MAX_WORD_LEN = BUFSIZ;
-// one letter word
-const size_t MIN_WORD_LEN = 1;
-const size_t MAX_INPUT_LEN = 0xFFFF;
-// one letter input
-const size_t MIN_INPUT_LEN = 1; 
-
 int process_and_save(FILE *, const char *);
 int show_file(FILE *);
-int create_tmp_file(FILE ** );
-int load_words_to_sll(FILE * fp, dbj_sll_node **, bool);
+int create_tmp_file(FILE **);
+int load_words_to_sll(FILE *, dbj_sll_node **, bool);
 
-int main(const int argc, const char * argv[])
+int remove_non_alphas( const char * to_parse, dbj_sll_node ** sll_output_ )
 {
-
-#ifdef TEST_DBJ_DYNAMIC
-	dbj_list_test();
-#endif
-
-	(void)(&argc); (void)argv; // remove the no use warning
-
-	const char * to_parse =
-		( argc < 2 ? TEST_INPUT : argv[1] );
+	assert(to_parse);
 
 	FILE * tmp_file_ = NULL;
-		
+
 	if (EXIT_SUCCESS == create_tmp_file(&tmp_file_))
 	{
 		if (EXIT_SUCCESS == process_and_save(tmp_file_, to_parse))
 		{
-			dbj_sll_node * sll_;
+			dbj_sll_node ** sll_ = sll_output_ ;
 			bool verbosity = false;
-			if (EXIT_SUCCESS != load_words_to_sll(tmp_file_, &sll_, verbosity))
+			if (EXIT_SUCCESS != load_words_to_sll(tmp_file_, sll_, verbosity))
 			{
 				perror("load_words_to_sll() failed");
 				return EXIT_FAILURE;
@@ -85,15 +48,7 @@ int main(const int argc, const char * argv[])
 				perror("tmp file closing failed");
 				return EXIT_FAILURE;
 			}
-
-			printf("\nThe SLL content");
-			dbj_sll_foreach(sll_, dbj_sll_node_dump_visitor);
-			printf("\n");
-
-			// erase the sll + the head 
-			dbj_sll_erase_with_head(sll_);
-
-			return EXIT_SUCCESS;
+				return EXIT_SUCCESS;
 		}
 	}
 	return EXIT_FAILURE;
@@ -151,7 +106,7 @@ int create_tmp_file ( FILE ** fp_fp )
 
 int load_words_to_sll(FILE * fp, dbj_sll_node ** sll_head_, bool verbose )
 {
-	dbj_sll_node * sll_ = dbj_sll_make_head();
+	dbj_sll_node * sll_ = *sll_head_ = dbj_sll_make_head();
 	// do not forget to rewind
 	// to the top
 	rewind(fp); 
