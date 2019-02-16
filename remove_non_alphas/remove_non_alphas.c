@@ -20,6 +20,7 @@ limitations under the License.
 #include <sys/stat.h>
 
 #include "../libs/dbj_sll.h"
+#include "../libs/dbj_list.h"
 /*
 task: remove all non alpha chars from a given string, coming from a command line
 
@@ -47,6 +48,11 @@ int load_words_to_sll(FILE * fp, dbj_sll_node **, bool);
 
 int main(const int argc, const char * argv[])
 {
+
+#ifdef TEST_DBJ_DYNAMIC
+	dbj_list_test();
+#endif
+
 	(void)(&argc); (void)argv; // remove the no use warning
 
 	const char * to_parse =

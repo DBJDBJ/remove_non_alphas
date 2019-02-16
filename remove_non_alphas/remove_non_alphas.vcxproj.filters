@@ -13,15 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="dbj_sll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="libs">
+      <UniqueIdentifier>{09b13eb7-f604-4a54-b8de-1e8bb8400463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="remove_non_alphas.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libs\dbj_list.c">
+      <Filter>libs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\dbj_list.h">
+      <Filter>libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\dbj_sll.h">
+      <Filter>libs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

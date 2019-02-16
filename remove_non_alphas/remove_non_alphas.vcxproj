@@ -151,10 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="dbj_sll.h" />
+    <ClCompile Include="..\libs\dbj_list.c" />
+    <ClCompile Include="remove_non_alphas.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="remove_non_alphas.c" />
+    <ClInclude Include="..\libs\dbj_list.h" />
+    <ClInclude Include="..\libs\dbj_sll.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
