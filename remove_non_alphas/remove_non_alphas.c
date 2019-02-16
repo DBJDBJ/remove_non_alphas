@@ -21,12 +21,14 @@ limitations under the License.
 #include <ctype.h>
 #include <sys/stat.h>
 
+static bool VERBOSITY = true;
+
 int process_and_save(FILE *, const char *);
 int show_file(FILE *);
 int create_tmp_file(FILE **);
-int load_words_to_sll(FILE *, dbj_sll_node **, bool);
+int load_words_to_sll(FILE *, append_to_list_fp callback_, bool);
 
-int remove_non_alphas( const char * to_parse, dbj_sll_node ** sll_output_ )
+int remove_non_alphas( const char * to_parse, append_to_list_fp callback_)
 {
 	assert(to_parse);
 
@@ -36,9 +38,8 @@ int remove_non_alphas( const char * to_parse, dbj_sll_node ** sll_output_ )
 	{
 		if (EXIT_SUCCESS == process_and_save(tmp_file_, to_parse))
 		{
-			dbj_sll_node ** sll_ = sll_output_ ;
-			bool verbosity = false;
-			if (EXIT_SUCCESS != load_words_to_sll(tmp_file_, sll_, verbosity))
+			bool verbosity = VERBOSITY;
+			if (EXIT_SUCCESS != load_words_to_sll(tmp_file_, callback_, verbosity))
 			{
 				perror("load_words_to_sll() failed");
 				return EXIT_FAILURE;
@@ -56,6 +57,7 @@ int remove_non_alphas( const char * to_parse, dbj_sll_node ** sll_output_ )
 
 int process_and_save(FILE * fp, const char * input)
 {
+	static const char * WORD_DELIMITER = "\n";
 	// int input_len = strlen(to_parse) ;
 	char * walker = (char *)(input);
 	while (*walker++)
@@ -64,23 +66,51 @@ int process_and_save(FILE * fp, const char * input)
 		if (isalpha(*walker)) {
 			fprintf(fp, "%c", *walker);
 			// I am alpha but next one is not
-			// so write an "word end" aka "\n", next
-			// one line is one word
+			// so write an WORD_DELIMITER, next
+			// one line is one word in the result file
 			if (!isalpha(*(walker + 1)))
-				fprintf(fp, "\n");
+				fprintf(fp, "%s", WORD_DELIMITER);
 		}
 	}
 
 	return EXIT_SUCCESS; // aka 0
 }
 
+int load_words_to_sll(FILE * fp, append_to_list_fp callback_, bool verbose )
+{
+	// do not forget to rewind
+	// to the top
+	rewind(fp); 
+	const size_t LINE_MAX = MAX_WORD_LEN ;
+	char line[LINE_MAX] = {0};
+	size_t word_size = 0;
+
+	while (fgets(line, LINE_MAX, fp)) 
+	{
+		// fgets takes '\n' as the part of the string
+		// so let's replace it with '\0' first
+		word_size = strlen(line);
+		line[word_size - 1] = '\0';
+		// print second but only if in a verbose mode
+		if (verbose) printf("'%s'", line);
+
+		// internal line is copied 
+		// when erasing the whole sll
+		//it will be freed to
+		callback_(line);
+	}
+
+	// the error handling
+	return (EXIT_SUCCESS);
+}
+
 int show_file(FILE* fp)
 {
 	// important, since we are 
 	// already at EOF
-	rewind(fp); 
+	rewind(fp);
 	int c; // note: int, not char!
-	while ((c = fgetc(fp)) != EOF) { 
+	while ((c = fgetc(fp)) != EOF) {
 		putchar(c);
 	}
 
@@ -92,46 +122,14 @@ int show_file(FILE* fp)
 	return EXIT_SUCCESS; // aka 0
 }
 
-int create_tmp_file ( FILE ** fp_fp ) 
+int create_tmp_file(FILE ** fp_fp)
 {
 	*fp_fp = tmpfile();
 
-	if ( NULL == *fp_fp) {
+	if (NULL == *fp_fp) {
 		perror("TMP File opening failed");
 		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS; // aka 0
-}
-
-int load_words_to_sll(FILE * fp, dbj_sll_node ** sll_head_, bool verbose )
-{
-	dbj_sll_node * sll_ = *sll_head_ = dbj_sll_make_head();
-	// do not forget to rewind
-	// to the top
-	rewind(fp); 
-	const size_t LINE_MAX = 0xFF;
-	char line[LINE_MAX] = {0};
-	size_t word_size = 0;
-
-	while (fgets(line, LINE_MAX, fp)) 
-	{
-		// fgets takes '\n' as the part of the string
-		// so let's replace it with '\0' first
-		word_size = strlen(line);
-		line[word_size-1] = '\0';
-		// print second but only if in a verbose mode
-		if (verbose) printf("'%s'", line);
-
-		// internal line is copied 
-		// when erasing the whole sll
-		//it will be freed to
-		dbj_sll_append(sll_, line);
-	}
-
-	// the result
-	*sll_head_ = sll_;
-
-	// the error handling
-	return (EXIT_SUCCESS);
 }

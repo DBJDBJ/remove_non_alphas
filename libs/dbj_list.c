@@ -4,14 +4,17 @@
 #include <assert.h>
 
 static unsigned dbj_list_max_size = 0xFFFF;
-static char * dbj_list_sentinel_ = (char *)((char)127);
+static const char dbj_list_sentinel_char = '\033' ; // ESC aka ((char)127);
+static const char * dbj_list_sentinel_ = (char *)(&dbj_list_sentinel_char);
 
 dbj_list_type dbj_list_new()
 {
 	dbj_list_type empty_ = 0;
 	empty_ = (dbj_list_type)malloc(sizeof(empty_));
-	*empty_ = (char *)malloc(sizeof(*empty_));
-	*empty_ = dbj_list_sentinel_;
+	assert(empty_);
+	// *empty_ = (char *)malloc(sizeof(*empty_));
+	assert(*empty_);
+	*empty_ = (char*)dbj_list_sentinel_;
 
 	return empty_;
 }
@@ -46,7 +49,7 @@ dbj_list_type dbj_list_append(dbj_list_type head_, const char * str_)
 
 	// attention: count and index are not the same
 	head_[current_count_ + 0] = _strdup(str_);
-	head_[current_count_ + 1] = dbj_list_sentinel_;
+	head_[current_count_ + 1] = (char*)dbj_list_sentinel_;
 
 	return head_;
 }
@@ -69,8 +72,11 @@ void dbj_list_free(dbj_list_type head_)
 			end_ -= 1;
 		};
 	}
-	if (dbj_list_sentinel_ != *head_) free(*head_);
-	free(head_);
+	if ( head_) {
+		free(head_);
+		head_ = 0  ;
+	}
+	// free(head_);
 }
 
 dbj_list_type dbj_list_reset(dbj_list_type head_)

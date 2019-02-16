@@ -32,7 +32,9 @@ extern "C" {
 	// one letter input
 	static const size_t MIN_INPUT_LEN = 1;
 	
-	int remove_non_alphas(const char * to_parse, dbj_sll_node **);
+	typedef int(*append_to_list_fp)(const char *);
+
+	int remove_non_alphas(const char * , append_to_list_fp);
 
 
 #ifdef __cplucplus

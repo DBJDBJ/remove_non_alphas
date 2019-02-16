@@ -44,7 +44,7 @@ extern "C" {
 
 
 
-#define TEST_DBJ_DYNAMIC
+//  #define TEST_DBJ_DYNAMIC
 #ifdef TEST_DBJ_DYNAMIC
 
 	inline void dbj_list_test()
