@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
@@ -152,12 +152,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\dbj_list.c" />
+    <ClCompile Include="..\libs\dbj_list_test.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="remove_non_alphas.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\dbj_list.h" />
     <ClInclude Include="..\libs\dbj_sll.h" />
+    <ClInclude Include="program.h" />
     <ClInclude Include="remove_non_alphas.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

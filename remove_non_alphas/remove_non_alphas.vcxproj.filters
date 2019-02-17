@@ -27,6 +27,9 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libs\dbj_list_test.c">
+      <Filter>libs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\dbj_list.h">
@@ -36,6 +39,9 @@
       <Filter>libs</Filter>
     </ClInclude>
     <ClInclude Include="remove_non_alphas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="program.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

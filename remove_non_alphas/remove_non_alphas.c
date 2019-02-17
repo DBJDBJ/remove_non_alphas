@@ -13,6 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+#include "program.h"
 #include "remove_non_alphas.h"
 
 #include <stdlib.h>
@@ -21,7 +22,7 @@ limitations under the License.
 #include <ctype.h>
 #include <sys/stat.h>
 
-static bool VERBOSITY = true;
+
 
 int process_and_save(FILE *, const char *);
 int show_file(FILE *);
